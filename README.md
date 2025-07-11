@@ -23,6 +23,15 @@ Options:
 gxtools.exe net ping -t 192.168.100.1,192.168.100.3-5,192.168.200.1/24
 ~~~
 
+### Trace 待完善，当前无法解析返回包
+
+~~~bash
+# 参数
+执行路由追踪操作
+
+~~~
+
+
 ## 等保核查模块
 
 ### Linux（ssh方式）
@@ -133,7 +142,26 @@ gxtools.exe check oracle -H 192.168.100.1 -P 1521 -p mima  -e -c 'SELECT * FROM 
 gxtools.exe check oracle -f oracle.xlsx		# 默认命令
 ~~~
 
-## 
+### Redis
+
+默认存储于output/redis/ip.json
+
+~~~bash
+# 参数
+执行 Redis 命令（等保基线采集）
+
+Usage: gxtools.exe check redis [OPTIONS] --host <HOST>
+
+Options:
+  -H, --host <HOST>
+  -P, --port <PORT>          [default: 6379]
+  -p, --password <PASSWORD>  [default: ]
+  -h, --help                 Print help
+
+  
+# 例子
+gxtools.exe check redis -H 192.168.1.1 -P 6379 -p redis_pass 
+~~~
 
 ## 渗透测试模块
 ### 端口扫描
@@ -157,5 +185,53 @@ gxtools.exe pentest portscan -t 192.168.100.1
 gxtools.exe pentest portscan -t 192.168.1.2,192.168.100.1/24 -p 135,137-139-445
 # 全端口，并输出到excel中
 gxtools.exe pentest portscan -t 192.168.1.2 --full --output
+~~~
+
+### 漏洞探测 待完善，需优化漏洞链接库
+
+
+~~~bash
+# 参数
+poc模块测试
+
+Usage: gxtools.exe pentest poctest [OPTIONS] --ip <IP>
+
+Options:
+  -i, --ip <IP>      目标 IP 地址
+  -p, --port <PORT>  端口号（可选）
+      --poc <POC>    指定漏洞名称（即.so 文件名，不含后缀）
+  -h, --help         Print help
+~~~
+
+### url路径探测
+
+~~~bash
+# 参数
+URL 路径探测
+
+Usage: gxtools.exe pentest urlscan [OPTIONS] --url <URL>
+
+Options:
+  -u, --url <URL>    目标 URL，如 http://example.com
+  -d, --dict <DICT>  字典文件路径 [default: urlscan.txt]
+  -h, --help         Print help
+~~~
+
+### url页面截图
+
+需要有chrome无头浏览器支持
+>下载地址如下 https://github.com/ungoogled-software/ungoogled-chromium-windows
+
+~~~bash
+# 参数
+URL截图
+
+Usage: gxtools.exe pentest screenshot [OPTIONS] --url-file <URL_FILE>
+
+Options:
+  -u, --url-file <URL_FILE>        包含URL列表的文件路径
+  -o, --output <OUTPUT>            输出目录 [default: screenshots]
+      --concurrency <CONCURRENCY>  并发任务数 [default: 4]
+      --path <PATH>                指定无头浏览器位置 [default: ./chromiumoxide/chrome.exe]
 ~~~
 
