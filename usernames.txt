@@ -1,0 +1,44 @@
+# 默认用户名字典
+# 一行一个用户名，# 开头的行为注释
+
+# 通用管理员账号
+admin
+administrator
+root
+user
+test
+guest
+
+# Linux 常见用户
+ubuntu
+centos
+debian
+oracle
+mysql
+postgres
+redis
+nginx
+apache
+
+# Web 应用默认用户
+tomcat
+nacos
+weblogic
+jboss
+glassfish
+jetty
+
+# 数据库默认用户
+sa
+dba
+system
+sysdba
+sysoper
+
+# 其他常见用户
+support
+operator
+manager
+superuser
+developer
+monitor

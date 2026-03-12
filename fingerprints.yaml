@@ -1,0 +1,25 @@
+- name: Kibana
+  ports: [5601]
+  probes:
+    - path: /
+      method: HEAD
+      priority: 1
+      match_headers: ["kbn-version"]
+      match_body: []
+      max_read: 512
+    - path: /
+      method: GET
+      priority: 10
+      match_headers: []
+      match_body: ["kibana"]
+      max_read: 4096
+
+- name: Elasticsearch
+  ports: [9200]
+  probes:
+    - path: /_cluster/health
+      method: GET
+      priority: 1
+      match_headers: []
+      match_body: ["cluster_name", "status"]
+      max_read: 8192

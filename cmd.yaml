@@ -1,0 +1,29 @@
+linux_commands:
+  - df -h
+  - uptime
+  - whoami
+  - pwd
+mysql_commands:
+  - "SELECT VERSION();"
+  - "SELECT user, host FROM mysql.user;"
+  - |
+    SELECT
+        table_schema AS 'Database',
+        ROUND(SUM(data_length)/1024/1024, 2) AS 'Data_MB',
+        ROUND(SUM(index_length)/1024/1024, 2) AS 'Index_MB',
+        ROUND(SUM(data_length+index_length)/1024/1024, 2) AS 'Total_MB'
+    FROM information_schema.tables
+    WHERE table_schema NOT IN ('mysql', 'information_schema', 'performance_schema', 'sys')
+    GROUP BY table_schema
+    ORDER BY Total_MB DESC;
+
+
+oracle_commands:
+  - SELECT * FROM v$version
+  - SELECT username, account_status FROM dba_users
+redis_commands:
+  - "redis-cli CONFIG GET bind"
+  - "redis-cli CONFIG GET requirepass"
+  - "redis-cli CONFIG GET protected-mode"
+  - "redis-cli CONFIG GET tls-port"
+  - "redis-cli INFO"

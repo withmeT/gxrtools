@@ -1,0 +1,30 @@
+id: your_vuln_id
+name: 你的漏洞名称
+transport: http
+port: 80                # 可选：默认端口（每个 step 也能单独写 port 覆盖）
+severity: medium        # 可选：low/medium/high/critical（字符串即可）
+tags: ["web", "your-tag"]
+
+http:
+  scheme: http          # http 或 https
+  any: false            # false=所有 step 都命中才算命中；true=任意一个 step 命中就算命中
+  requests:
+    - method: GET
+      path: /path
+      port: 8080        # 可选：覆盖端口
+      timeout: 5        # 可选：秒
+      headers:
+        User-Agent: "gxtools-poctest"
+        # Authorization: "Basic base64(user:pass)"   # 若是弱口令/默认口令
+      credential: "user:pass" # 可选：只有“凭证类”探测才需要，命中后会写入输出
+      body: ""           # 可选：POST/PUT 时用
+      matchers:
+        - type: status
+          status: 200
+        - type: body_contains
+          contains: "some keyword"
+        # - type: body_regex
+        #   regex: "pattern"
+        # - type: header_contains
+        #   header: "Server"
+        #   contains: "nginx"

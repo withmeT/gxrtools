@@ -1,0 +1,105 @@
+id: elasticsearch_weakpass_basic_more
+name: Elasticsearch 弱口令/空口令（Basic Auth 扩展）
+transport: http
+port: 9200
+severity: high
+tags: ["elasticsearch", "weakpass", "basic-auth"]
+http:
+  scheme: http
+  any: true
+  requests:
+    # elastic:<empty>
+    - method: GET
+      path: /_security/_authenticate
+      credential: "elastic:"
+      headers:
+        Authorization: "Basic ZWxhc3RpYzo="
+      matchers:
+        - type: status
+          status: 200
+        - type: body_regex
+          regex: "\"username\"\\s*:\\s*\"elastic\""
+
+    # elastic:123456
+    - method: GET
+      path: /_security/_authenticate
+      credential: "elastic:123456"
+      headers:
+        Authorization: "Basic ZWxhc3RpYzoxMjM0NTY="
+      matchers:
+        - type: status
+          status: 200
+        - type: body_regex
+          regex: "\"username\"\\s*:\\s*\"elastic\""
+
+    # elastic:password
+    - method: GET
+      path: /_security/_authenticate
+      credential: "elastic:password"
+      headers:
+        Authorization: "Basic ZWxhc3RpYzpwYXNzd29yZA=="
+      matchers:
+        - type: status
+          status: 200
+        - type: body_regex
+          regex: "\"username\"\\s*:\\s*\"elastic\""
+
+    # admin:<empty>
+    - method: GET
+      path: /_security/_authenticate
+      credential: "admin:"
+      headers:
+        Authorization: "Basic YWRtaW46"
+      matchers:
+        - type: status
+          status: 200
+        - type: body_regex
+          regex: "\"username\"\\s*:\\s*\"admin\""
+
+    # admin:admin
+    - method: GET
+      path: /_security/_authenticate
+      credential: "admin:admin"
+      headers:
+        Authorization: "Basic YWRtaW46YWRtaW4="
+      matchers:
+        - type: status
+          status: 200
+        - type: body_regex
+          regex: "\"username\"\\s*:\\s*\"admin\""
+
+    # kibana:<empty>
+    - method: GET
+      path: /_security/_authenticate
+      credential: "kibana:"
+      headers:
+        Authorization: "Basic a2liYW5hOg=="
+      matchers:
+        - type: status
+          status: 200
+        - type: body_regex
+          regex: "\"username\"\\s*:\\s*\"kibana\""
+
+    # kibana:kibana
+    - method: GET
+      path: /_security/_authenticate
+      credential: "kibana:kibana"
+      headers:
+        Authorization: "Basic a2liYW5hOmtpYmFuYQ=="
+      matchers:
+        - type: status
+          status: 200
+        - type: body_regex
+          regex: "\"username\"\\s*:\\s*\"kibana\""
+
+    # logstash_system:<empty>
+    - method: GET
+      path: /_security/_authenticate
+      credential: "logstash_system:"
+      headers:
+        Authorization: "Basic bG9nc3Rhc2hfc3lzdGVtOg=="
+      matchers:
+        - type: status
+          status: 200
+        - type: body_regex
+          regex: "\"username\"\\s*:\\s*\"logstash_system\""
