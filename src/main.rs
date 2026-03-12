@@ -4,7 +4,7 @@ use std::process;
 
 #[derive(Parser, Debug)]
 #[command(name = "gxtools")]
-#[command(version, about = "GX安全工具箱 - 网络测试、渗透测试、等保核查工具集", long_about = None)]
+#[command(version, about = "GX安全工具箱 - 网络测试、渗透测试、等保核查工具集\n项目地址：https://github.com/withmeT/gxrtools", long_about = None)]
 struct Cli {
     #[command(subcommand)]
     command: Commands,

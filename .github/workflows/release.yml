@@ -38,11 +38,11 @@ jobs:
         run: cargo build --release --locked
 
       - name: Prepare asset
-        shell: bash
         run: |
           mkdir -p dist
           cp "target/release/${{ matrix.bin }}" "dist/${{ matrix.asset }}"
-
+      - name: Show dist
+        run: ls -R dist
       - name: Upload to GitHub Release
         uses: softprops/action-gh-release@v2
         with:
