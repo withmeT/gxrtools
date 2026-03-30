@@ -274,7 +274,10 @@ fn windows_icmp_trace(args: &TraceArgs, dest_ip: IpAddr) -> Result<(), Box<dyn E
                 }
 
                 let reply: &ICMP_ECHO_REPLY = &*(reply_buf.as_ptr() as *const ICMP_ECHO_REPLY);
-                let addr = Ipv4Addr::from(reply.Address);
+                // windows_sys 的 `ICMP_ECHO_REPLY.Address` 在当前平台上返回的字节序与 `Ipv4Addr::from(u32)`
+                // 的期望不一致，表现为 IP 四段被反过来（例如 192.168.4.169 -> 169.4.168.192）。
+                // 这里做一次字节序交换后再转换，保证展示的 IP 正确。
+                let addr = Ipv4Addr::from(reply.Address.swap_bytes());
                 hop_ip.get_or_insert(addr);
                 rtts_ms.push(reply.RoundTripTime);
 
